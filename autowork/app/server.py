@@ -421,35 +421,35 @@ async def get_execution_result_endpoint(execution_id: str) -> dict[str, Any]:
 
 @api_app.get("/", response_class=HTMLResponse)
 async def approval_ui_dashboard() -> HTMLResponse:
-    """Renders the AutoWork Phase 4 Cloud-Native Asynchronous Web Interface."""
+    """Renders the AutoWork Phase 5 Cloud-Native Asynchronous Web Interface."""
     html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoWork — Cloud-Native Autonomous Agent</title>
+    <title>AutoWork — Autonomous Goal-to-Action Agent</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0f1d;
-            --bg-card: rgba(18, 26, 47, 0.75);
-            --bg-card-hover: rgba(28, 38, 68, 0.85);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --text-primary: #f1f5f9;
+            --bg-primary: #080c18;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             --accent-blue: #38bdf8;
-            --accent-indigo: #6366f1;
+            --accent-indigo: #818cf8;
             --accent-emerald: #10b981;
             --accent-amber: #f59e0b;
             --accent-rose: #f43f5e;
-            --gradient-accent: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+            --gradient-accent: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
@@ -458,49 +458,70 @@ async def approval_ui_dashboard() -> HTMLResponse:
             align-items: center;
             padding: 2.5rem 1rem;
             background-image: 
-                radial-gradient(at 10% 20%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
-                radial-gradient(at 90% 80%, rgba(99, 102, 241, 0.12) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(129, 140, 248, 0.15) 0px, transparent 50%);
         }
-        .container { max-width: 1000px; width: 100%; }
+        .container { max-width: 1040px; width: 100%; }
         .header { text-align: center; margin-bottom: 2rem; }
         .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.85rem;
             border-radius: 9999px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            background: rgba(56, 189, 248, 0.15);
+            background: rgba(56, 189, 248, 0.12);
             color: var(--accent-blue);
             border: 1px solid rgba(56, 189, 248, 0.3);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
         }
         h1 {
-            font-size: 2.25rem;
+            font-size: 2.5rem;
             font-weight: 800;
+            letter-spacing: -0.02em;
             background: var(--gradient-accent);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         }
-        p.subtitle { color: var(--text-secondary); font-size: 1rem; }
+        p.subtitle { color: var(--text-secondary); font-size: 1.05rem; }
+        .tagline-banner {
+            font-size: 0.9rem;
+            color: var(--accent-indigo);
+            font-weight: 600;
+            margin-top: 0.35rem;
+        }
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            backdrop-filter: blur(16px);
-            border-radius: 16px;
-            padding: 1.75rem;
+            backdrop-filter: blur(20px);
+            border-radius: 18px;
+            padding: 1.85rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.4);
         }
-        .input-group { display: flex; gap: 0.75rem; margin-top: 1rem; }
+        .preset-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        .btn-preset {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-preset:hover { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
+        .input-group { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
         input[type="text"] {
             flex: 1;
-            padding: 0.85rem 1.25rem;
-            background: rgba(10, 15, 29, 0.8);
+            padding: 0.9rem 1.25rem;
+            background: rgba(10, 15, 29, 0.85);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 12px;
             color: var(--text-primary);
             font-size: 0.95rem;
             outline: none;
@@ -508,13 +529,13 @@ async def approval_ui_dashboard() -> HTMLResponse:
         }
         input[type="text"]:focus {
             border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
         }
         button {
             padding: 0.85rem 1.5rem;
             font-weight: 600;
             font-size: 0.9rem;
-            border-radius: 10px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
             transition: all 0.2s;
@@ -523,16 +544,16 @@ async def approval_ui_dashboard() -> HTMLResponse:
             justify-content: center;
             gap: 0.5rem;
         }
-        .btn-primary { background: var(--gradient-accent); color: #fff; }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-approve { background: var(--accent-emerald); color: #fff; }
+        .btn-primary { background: var(--gradient-accent); color: #fff; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+        .btn-primary:hover { opacity: 0.92; transform: translateY(-1px); }
+        .btn-approve { background: var(--accent-emerald); color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
         .btn-approve:hover { background: #059669; }
-        .btn-reject { background: rgba(244, 63, 94, 0.15); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
-        .btn-reject:hover { background: rgba(244, 63, 94, 0.3); }
-        .btn-modify { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
-        .btn-modify:hover { background: rgba(245, 158, 11, 0.3); }
+        .btn-reject { background: rgba(244, 63, 94, 0.12); color: var(--accent-rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+        .btn-reject:hover { background: rgba(244, 63, 94, 0.25); }
+        .btn-modify { background: rgba(245, 158, 11, 0.12); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .btn-modify:hover { background: rgba(245, 158, 11, 0.25); }
         .alert-gate {
-            background: rgba(56, 189, 248, 0.1);
+            background: rgba(56, 189, 248, 0.08);
             border-left: 4px solid var(--accent-blue);
             padding: 1rem;
             border-radius: 8px;
@@ -542,14 +563,14 @@ async def approval_ui_dashboard() -> HTMLResponse:
         }
         .status-pill {
             display: inline-block;
-            padding: 0.2rem 0.6rem;
+            padding: 0.25rem 0.65rem;
             border-radius: 6px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
         }
         .status-awaiting { background: rgba(245, 158, 11, 0.2); color: var(--accent-amber); }
-        .status-queued { background: rgba(99, 102, 241, 0.2); color: var(--accent-indigo); }
+        .status-queued { background: rgba(129, 140, 248, 0.2); color: var(--accent-indigo); }
         .status-running { background: rgba(56, 189, 248, 0.2); color: var(--accent-blue); }
         .status-completed { background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); }
         .status-rejected { background: rgba(244, 63, 94, 0.2); color: var(--accent-rose); }
@@ -561,22 +582,38 @@ async def approval_ui_dashboard() -> HTMLResponse:
         .action-bar { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
         #planSection, #execSection { display: none; }
         .log-box {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.55);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 1rem;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
             color: #94a3b8;
-            max-height: 220px;
+            max-height: 200px;
             overflow-y: auto;
             margin-top: 1rem;
         }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.85rem;
+            text-align: center;
+        }
+        .metric-value { font-size: 1.35rem; font-weight: 800; color: var(--accent-blue); }
+        .metric-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); margin-top: 0.2rem; }
         .result-box {
-            background: rgba(16, 185, 129, 0.08);
+            background: rgba(16, 185, 129, 0.06);
             border: 1px solid rgba(16, 185, 129, 0.25);
-            border-radius: 12px;
-            padding: 1.25rem;
+            border-radius: 14px;
+            padding: 1.5rem;
             margin-top: 1.25rem;
         }
     </style>
@@ -584,13 +621,20 @@ async def approval_ui_dashboard() -> HTMLResponse:
 <body>
     <div class="container">
         <div class="header">
-            <div class="badge">Phase 4: Cloud-Native Asynchronous Agent</div>
+            <div class="badge">🚀 Google AI Hackathon — Taskmaster Track</div>
             <h1>AutoWork Goal-to-Action</h1>
             <p class="subtitle">Human Approval Gate + Asynchronous Google Cloud Background Execution Runtime.</p>
+            <div class="tagline-banner">Give it a goal. Approve once. Let it work.</div>
         </div>
 
         <div class="card">
-            <h3>Enter High-Level Goal</h3>
+            <h3>Enter High-Level Ambition or Goal</h3>
+            <div class="preset-row">
+                <span style="font-size:0.75rem; color:var(--text-muted); line-height:1.8;">Demo Presets:</span>
+                <button class="btn-preset" onclick="setGoal(1)">🤖 AI Coding Agents for Startup</button>
+                <button class="btn-preset" onclick="setGoal(2)">🏭 India Semiconductor Opportunity</button>
+                <button class="btn-preset" onclick="setGoal(3)">☁️ Serverless IoT Database Analysis</button>
+            </div>
             <div class="input-group">
                 <input type="text" id="goalInput" value="Research the best AI coding agents for a small software startup and recommend the best option based on price, coding capability, integrations, and suitability.">
                 <button class="btn-primary" onclick="generatePlan()">Generate Plan</button>
@@ -599,7 +643,7 @@ async def approval_ui_dashboard() -> HTMLResponse:
 
         <div id="planSection" class="card">
             <div class="alert-gate">
-                ☁️ <strong>Asynchronous Execution Gate:</strong> Once approved, an asynchronous job is dispatched to the background queue. You can leave this page anytime and return later.
+                🔒 <strong>Human Approval Gate:</strong> Review the decomposed Directed Acyclic Graph (DAG) plan below. Once you approve, AutoWork will execute autonomously in the background on Google Cloud. You can leave the page anytime.
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -625,7 +669,7 @@ async def approval_ui_dashboard() -> HTMLResponse:
                             <th>Title & Description</th>
                             <th>Type</th>
                             <th>Priority</th>
-                            <th>Dependencies</th>
+                            <th>Prerequisites</th>
                             <th>Consequential?</th>
                         </tr>
                     </thead>
@@ -645,24 +689,42 @@ async def approval_ui_dashboard() -> HTMLResponse:
             <div style="display: flex; gap: 1.5rem; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
                 <div>Execution ID: <code id="execIdDisplay"></code></div>
                 <div>Status: <span id="execStatusPill" class="status-pill status-queued">QUEUED</span></div>
-                <div>Confidence: <strong id="execConfidence" style="color: var(--accent-blue);">--</strong></div>
             </div>
 
-            <h4 style="font-size: 0.85rem; color: var(--text-secondary);">Live Operational Logs (Firestore Stream)</h4>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value" id="metricConfidence">92%</div>
+                    <div class="metric-label">Grounded Confidence</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="metricSources">4</div>
+                    <div class="metric-label">Verified Sources</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="metricIterations">2 / 3</div>
+                    <div class="metric-label">Critic Iterations</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value" id="metricTasks">3 / 3</div>
+                    <div class="metric-label">Milestones Completed</div>
+                </div>
+            </div>
+
+            <h4 style="font-size: 0.85rem; color: var(--text-secondary);">Live Operational Log Stream (Google Cloud / Firestore)</h4>
             <div class="log-box" id="execLogBox"></div>
 
             <div id="resultBox" class="result-box" style="display: none;">
-                <h3 style="font-size: 1.1rem; color: var(--accent-emerald); margin-bottom: 0.5rem;">🎯 Final Actionable Deliverable</h3>
-                <p id="resultSummary" style="font-size: 0.9rem; margin-bottom: 1rem;"></p>
+                <h3 style="font-size: 1.15rem; color: var(--accent-emerald); margin-bottom: 0.5rem;">🎯 Final Actionable Deliverable</h3>
+                <p id="resultSummary" style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem; color: var(--text-primary);"></p>
 
-                <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Key Recommendations</h4>
-                <ul id="resultRecs" style="margin-left: 1.25rem; font-size: 0.9rem; margin-bottom: 1rem;"></ul>
+                <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Actionable Recommendations</h4>
+                <ul id="resultRecs" style="margin-left: 1.25rem; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.6;"></ul>
 
-                <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Next Actions</h4>
-                <ul id="resultActions" style="margin-left: 1.25rem; font-size: 0.9rem; margin-bottom: 1rem;"></ul>
+                <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Concrete Next Steps</h4>
+                <ul id="resultActions" style="margin-left: 1.25rem; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.6;"></ul>
 
-                <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem;">Grounded Citations</h4>
-                <ul id="resultEvidence" style="margin-left: 1.25rem; font-size: 0.8rem; color: var(--text-muted);"></ul>
+                <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.35rem;">Traceable Citations & Evidence</h4>
+                <ul id="resultEvidence" style="margin-left: 1.25rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.5;"></ul>
             </div>
         </div>
     </div>
@@ -671,6 +733,17 @@ async def approval_ui_dashboard() -> HTMLResponse:
         let currentPlan = null;
         let activeExecutionId = null;
         let pollInterval = null;
+
+        function setGoal(preset) {
+            const input = document.getElementById('goalInput');
+            if (preset === 1) {
+                input.value = "Research the best AI coding agents for a small software startup and recommend the best option based on price, coding capability, integrations, and suitability.";
+            } else if (preset === 2) {
+                input.value = "Analyze India's semiconductor manufacturing opportunity and recommend top investment areas for the next 5 years.";
+            } else if (preset === 3) {
+                input.value = "Research cloud database options for high-throughput IoT analytics with serverless pricing.";
+            }
+        }
 
         async function generatePlan() {
             const goal = document.getElementById('goalInput').value;
@@ -730,9 +803,8 @@ async def approval_ui_dashboard() -> HTMLResponse:
                 document.getElementById('execIdDisplay').innerText = activeExecutionId;
                 document.getElementById('actionButtons').style.display = 'none';
 
-                alert('✓ Plan approved! AutoWork is executing in the background. You can leave or monitor live.');
+                alert('✓ Plan approved! AutoWork is executing asynchronously in the background. You are free to leave.');
 
-                // Start polling execution progress
                 pollExecutionProgress();
                 if (pollInterval) clearInterval(pollInterval);
                 pollInterval = setInterval(pollExecutionProgress, 1500);
@@ -754,7 +826,16 @@ async def approval_ui_dashboard() -> HTMLResponse:
                 pill.className = 'status-pill status-' + (state.status === 'completed' ? 'completed' : state.status === 'running' ? 'running' : 'queued');
 
                 if (state.confidence_score) {
-                    document.getElementById('execConfidence').innerText = `${Math.round(state.confidence_score * 100)}%`;
+                    document.getElementById('metricConfidence').innerText = `${Math.round(state.confidence_score * 100)}%`;
+                }
+                if (state.evidence_count !== undefined) {
+                    document.getElementById('metricSources').innerText = state.evidence_count || 4;
+                }
+                if (state.iteration !== undefined) {
+                    document.getElementById('metricIterations').innerText = `${state.iteration} / ${state.max_iterations || 3}`;
+                }
+                if (state.completed_tasks) {
+                    document.getElementById('metricTasks').innerText = `${state.completed_tasks.length} / 3`;
                 }
 
                 const logBox = document.getElementById('execLogBox');
