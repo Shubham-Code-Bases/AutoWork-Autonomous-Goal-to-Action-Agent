@@ -1,0 +1,43 @@
+steps:
+  # 1. Build Container Image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/autowork:${COMMIT_SHA}', '.']
+
+  # 2. Push Image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/autowork:${COMMIT_SHA}']
+
+  # 3. Deploy API Service to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'autowork-api'
+      - '--image=${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/autowork:${COMMIT_SHA}'
+      - '--region=${_LOCATION}'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--set-env-vars=GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${_LOCATION},AUTOWORK_CLOUD_MODE=true'
+
+  # 4. Deploy Worker Service to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'autowork-worker'
+      - '--image=${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/autowork:${COMMIT_SHA}'
+      - '--command=python'
+      - '--args=worker/main.py'
+      - '--region=${_LOCATION}'
+      - '--platform=managed'
+      - '--no-allow-unauthenticated'
+      - '--set-env-vars=GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${_LOCATION},AUTOWORK_CLOUD_MODE=true'
+
+substitutions:
+  _LOCATION: 'us-central1'
+  _REPOSITORY: 'autowork-repo'
+
+images:
+  - '${_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${_REPOSITORY}/autowork:${COMMIT_SHA}'
